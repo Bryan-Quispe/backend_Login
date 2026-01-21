@@ -19,10 +19,11 @@ async function bootstrap() {
   );
 
   // Habilitar CORS
-  app.enableCors({
-    origin: '*',
-    credentials: true,
-  });
+app.enableCors({
+  origin: true, // <--- CAMBIO AQUÍ: 'true' en lugar de '*'
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  credentials: true,
+});
 
   // Configurar Swagger
   const config = new DocumentBuilder()
@@ -65,3 +66,4 @@ async function bootstrap() {
   console.log(`🔄 JSON Swagger: http://localhost:${port}/api-json`);
 }
 bootstrap();
+
