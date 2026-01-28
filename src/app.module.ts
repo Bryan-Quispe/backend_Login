@@ -13,11 +13,20 @@ import { User } from './entities/user.entity';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '5432'),
-      username: process.env.DB_USER || 'serplantas',
-      password: process.env.DB_PASSWORD || 'serplantas123',
-      database: process.env.DB_NAME || 'serplantas_db',
+      ...(process.env.DATABASE_URL
+        ? {
+          url: process.env.DATABASE_URL,
+          ssl: {
+            rejectUnauthorized: false, // Required for Render
+          },
+        }
+        : {
+          host: process.env.DB_HOST || 'localhost',
+          port: parseInt(process.env.DB_PORT || '5432'),
+          username: process.env.DB_USER || 'serplantas',
+          password: process.env.DB_PASSWORD || 'serplantas123',
+          database: process.env.DB_NAME || 'serplantas_db',
+        }),
       entities: [User],
       synchronize: true,
       logging: true,
@@ -27,4 +36,4 @@ import { User } from './entities/user.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
