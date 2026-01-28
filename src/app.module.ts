@@ -28,8 +28,18 @@ import { User } from './entities/user.entity';
           database: process.env.DB_NAME || 'serplantas_db',
         }),
       entities: [User],
-      synchronize: true,
+      synchronize: true, // Esto creará las tablas automáticamente en Neon
       logging: true,
+      
+      // --- INICIO DEL CAMBIO ---
+      // Si estamos en producción (no localhost), activamos SSL
+      ssl: process.env.DB_HOST !== 'localhost', 
+      extra: {
+        ssl: process.env.DB_HOST !== 'localhost' 
+          ? { rejectUnauthorized: false } 
+          : null,
+      },
+      // --- FIN DEL CAMBIO ---
     }),
     AuthModule,
   ],
